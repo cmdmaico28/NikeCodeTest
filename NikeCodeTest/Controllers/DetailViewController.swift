@@ -164,7 +164,10 @@ class DetailViewController: UIViewController {
         
         guard let urlString = self.albumVM?.album.url, let url = URL(string: urlString) else { return }
         
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        if UIApplication.shared.canOpenURL(url) {
+        
+            UIApplication.shared.open(url)
+        }
     }
 
 }

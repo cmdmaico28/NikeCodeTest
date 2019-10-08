@@ -89,8 +89,9 @@ class CustomTableViewCell: UITableViewCell {
         self.albumImageView.topAnchor.constraint(equalTo: self.backView.topAnchor, constant: 5).isActive = true
         self.albumImageView.bottomAnchor.constraint(equalTo: self.backView.bottomAnchor, constant: -5).isActive = true
         
-        self.activity.leadingAnchor.constraint(equalTo: self.albumImageView.leadingAnchor, constant: 35).isActive = true
-        self.activity.topAnchor.constraint(equalTo: self.albumImageView.topAnchor, constant: 35).isActive = true
+        self.activity.translatesAutoresizingMaskIntoConstraints = false
+        self.activity.centerXAnchor.constraint(equalTo: self.albumImageView.centerXAnchor).isActive = true
+        self.activity.centerYAnchor.constraint(equalTo: self.albumImageView.centerYAnchor).isActive = true
         
         
         self.albumNameLabel.translatesAutoresizingMaskIntoConstraints = false

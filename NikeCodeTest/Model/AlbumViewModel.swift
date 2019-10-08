@@ -22,7 +22,7 @@ class AlbumViewModel {
     }
     
     
-    func downloadAlbumImage(completion: @escaping (_ success: Bool) -> ()) {
+    func downloadAlbumImage(index: Int, completion: @escaping (_ index: Int, _ success: Bool) -> ()) {
         
         guard let urlPath = self.album.artworkUrl else { return }
         
@@ -32,7 +32,7 @@ class AlbumViewModel {
                 
                 self.artworkImg = image
                 DispatchQueue.main.async {
-                    completion(true)
+                    completion(index, true)
                 }
             }
         })

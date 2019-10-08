@@ -31,17 +31,19 @@ class ViewController: UIViewController {
         
         WebServiceManager.sharedInstance.getTopAlbums(limit: 100, completion: { success, error, albumViewModel in
             
-            if success {
-                
-                guard let albumViewModel = albumViewModel else { return }
+            if success, let albumViewModel = albumViewModel {
                 
                 self.AlbumsArray.append(albumViewModel)
+                self.tableView.reloadData()
+                
                 //Download Album's Image
-                albumViewModel.downloadAlbumImage { success in
+                albumViewModel.downloadAlbumImage(index: self.AlbumsArray.count-1) { index, success in
                     if success {
-                        self.tableView.reloadData()
+                        self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
                     }
                 }
+            } else if let error = error {
+                print(error)
             }
         })
     }
@@ -49,12 +51,13 @@ class ViewController: UIViewController {
  
     func setTableView() {
         
-        tableView.frame = self.view.frame
-        tableView.backgroundColor = UIColor.white
-        tableView.separatorColor = UIColor.darkGray
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "Cell")
+        self.tableView.frame = self.view.frame
+        self.tableView.backgroundColor = UIColor.white
+        self.tableView.separatorColor = UIColor.darkGray
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.tableFooterView = UIView(frame: .zero)
+        self.tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "Cell")
         
         self.view.addSubview(tableView)
     }
@@ -80,7 +83,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.activity.stopAnimating()
             cell.albumImageView.image = item.artworkImg
         }
-        
         
         cell.albumNameLabel.text = item.album.name
         cell.artistNameLabel.text = item.album.artistName
